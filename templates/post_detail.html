@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head_title %} 
+{{instance.title}} || {{block.super}} 
+{% endblock head_title %}
+
+{% block content %} 
+
+
+<div class='col-sm-6 col-sm-offset-3' style="margin: auto;">
+	{% if instance.image %}
+		<img src="{{ instance.image.url }}" class="img-responsive" style="width: 600px; margin: auto; margin-bottom: 50px;" />
+	{% endif %}
+	<h1>{{ title }}</h1>
+
+	<small> {% if instance.draft %} <span style="color:red">Draft</span> {%endif%}</small>	
+
+	{% if instance.user.get_full_name %}
+	<p>Author: {{instance.user.get_full_name}} </p>	{%endif %}
+
+	<small>{{ instance.timestamp }}</small><br/>
+	{{instance.content | linebreaks}}<br/>
+	<small>Last Updated<br/> {{instance.updated}}</small>
+
+	<br/>		
+	</h2>
+
+	<p><div class="fb-like" data-href="{{ request.build_absolute_uri}}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+	</p>
+
+	<div class="fb-comments" data-href="{{request.build_absolute_uri}}" data-numposts="5"></div>
+
+</div>
+
+
+{% endblock content %} 

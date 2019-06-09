@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-sm-6 col-sm-offset-3" style="margin: auto;">
+<h1 style="color:#C0C0C0; text-align: center;" class="center">{{ title }}  </h1>
+
+
+<form method="GET" action='' >
+	<input type="text" class="form-control"  name="q" placeholder="Search Posts" value="{{request.GET.q}}" style="margin: auto;" />
+	<input type="submit" value='Search' class="btn btn-dark" style="margin: 20px 50% 20px 45%"/>
+
+</form>
+
+{% for obj in object_list %}
+	<div class="row">
+		{% if obj.image %}
+		<img style="width: 600px; margin: auto; margin-bottom: 50px; margin-top: 1px;" src="{{ obj.image.url }}" class="img-responsive"/>
+		<!-- <div class='col-sm-12'> --> </br>
+		{% endif %}
+
+	  <div class="col-sm-12">
+		    <div class="thumbnail">
+		      <!-- <img src="..." alt="..."> -->
+			      <div class="caption">
+			        <h3>
+			        <a href='/posts/{{obj.id}}/'>{{obj.title}}</a>
+
+			        <small>{{obj.publish}} </small>
+			    	</h3>
+			    	</br>
+					{% if obj.draft %}
+						<small> <span style="color:red">Draft</span> </small>
+					{% endif %}
+
+			    	{% if obj.user.get_full_name %}
+			    		<p>Author: {{obj.user.get_full_name}} </p>
+			    	{% endif %}
+			        <p>
+			        {{obj.content|linebreaks|truncatechars:150}}</p>
+
+			        <p>
+			        {{obj.updated}}
+			    	</p>
+
+			        <p>
+			        <a href="/posts/{{obj.id}}/" class="btn btn-primary" role="button">View</a> 
+
+<!-- 			        <a href="/posts/{{obj.id}}/edit" class="btn btn-default" role="Edit">Edit</a> </p>
+ -->			        
+			      </div>
+		    </div>
+	  </div>
+	</div>
+
+{% endfor %}
+
+</hr>
+</hr>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ object_list.previous_page_number }}">&laquo;  Previous </a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}">Next &raquo;</a>
+            <a href="?page={{ object_list.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
+</div>
+
+<!-- thumbnail bootstrap copy 26" 5:20 -->
+{% endblock content %}
